@@ -7,10 +7,11 @@ import asyncio
 import aiohttp
 
 from app.service.geo import GeoCity, lat_type, lon_type
+from app.service.env import env
 
 class CityProtocol(Protocol):
-    def __init__(city: GeoCity): ...
-    async def get_current_weather(): ...
+    def __init__(self, city: GeoCity): ...
+    async def get_current_weather(self): ...
 
 
 class City:
@@ -20,7 +21,7 @@ class City:
     ]
 
     weather_api: typing.ClassVar = 'https://api.openweathermap.org/data/2.5/weather'
-    api_key: typing.ClassVar = ''
+    api_key: typing.ClassVar = env.API_OPENWEATHER_KEY
 
     def __init__(self, city: GeoCity):
         self.city = city
