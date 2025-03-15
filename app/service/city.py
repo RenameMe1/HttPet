@@ -20,7 +20,7 @@ class City:
     ]
 
     weather_api: typing.ClassVar = 'https://api.openweathermap.org/data/2.5/weather'
-    api_key: typing.ClassVar = '136c9d9a8cdbb0e521bb5283735b9740'
+    api_key: typing.ClassVar = ''
 
     def __init__(self, city: GeoCity):
         self.city = city
