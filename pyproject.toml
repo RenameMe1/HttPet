@@ -1,0 +1,10 @@
+[project]
+name = "httpet"
+version = "0.1.0"
+description = "Await a pet."
+readme = "README.md"
+requires-python = ">=3.12"
+
+dependencies = [
+    "aiohttp[speedups]>=3.11.13",
+]
