@@ -7,4 +7,5 @@ requires-python = ">=3.12"
 
 dependencies = [
     "aiohttp[speedups]>=3.11.13",
+    "pydantic-settings>=2.8.1",
 ]
