@@ -6,22 +6,23 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 from pydantic_core import ValidationError
 
 all = [
-    'env',
+    "env",
 ]
+
 
 class _EnvVariable(BaseSettings):
     API_OPENWEATHER_KEY: typing.Annotated[
-            str,
-            ('API access key for openweathermap.org.'),
-            ]
+        str,
+        ("API access key for openweathermap.org."),
+    ]
 
 
 class _EnvFileVariable(_EnvVariable):
     model_config = SettingsConfigDict(
-            env_file='.env',
-            env_file_encoding='utf-8',
-            extra='ignore',
-            )
+        env_file=".env",
+        env_file_encoding="utf-8",
+        extra="ignore",
+    )
 
 
 def _define_variable_source():
@@ -31,5 +32,6 @@ def _define_variable_source():
         env = _EnvFileVariable()
 
     return env
+
 
 env = _define_variable_source()
