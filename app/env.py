@@ -15,6 +15,7 @@ class _EnvVariable(BaseSettings):
         str,
         ("API access key for openweathermap.org."),
     ]
+    API_NEWSAPI_KEY: typing.Annotated[str, ("API access key for newsapi.org")]
 
 
 class _EnvFileVariable(_EnvVariable):
