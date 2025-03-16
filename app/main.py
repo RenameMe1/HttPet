@@ -6,6 +6,7 @@ import asyncio
 
 from app.service.geo import GeoCity
 from app.service.city import City
+from app.service.news import News
 from app.service.output import OutputProtocol, ExcelOutput
 
 
@@ -21,6 +22,19 @@ async def create_weather_tasks(*, output: OutputProtocol) -> None:
     )
 
 
+async def create_news_task(*, output: OutputProtocol):
+    news_api = News()
+
+    news = await news_api.get_game_news_at_week()
+    print(news)
+
+    output.write(
+        news,
+        page="news",
+        # columns[""],
+    )
+
+
 def _generate_asyncio_tasks():
     tasks = list()
 
@@ -33,6 +47,12 @@ def _generate_asyncio_tasks():
     return tasks
 
 
-if __name__ == "__main__":
+async def main():
     excel = ExcelOutput("output.xlsx")
-    asyncio.run(create_weather_tasks(output=excel))
+
+    # await create_news_task(output=excel)
+    await create_weather_tasks(output=excel)
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
