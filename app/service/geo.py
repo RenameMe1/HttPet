@@ -2,13 +2,21 @@ from __future__ import annotations
 
 from enum import Enum
 
-__all__ = [
-    'GeoCity'
-]
+__all__ = ["GeoCity"]
 
-type lat_type = float
-type lon_type = float
+type latitude = float
+type longitude = float
+type fullname = str
+
 
 class GeoCity(Enum):
-    KRD: tuple(lat_type, lon_type) = (45.04484, 38.97603)
-    MSK: tuple(lat_type, lon_type) = (55.75222, 37.61556)
+    KRD: tuple(latitude, longitude, fullname) = (
+        45.04484,
+        38.97603,
+        "Krasnodar",
+    )
+    MSK: tuple(latitude, longitude, fullname) = (
+        55.75222,
+        37.61556,
+        "Moscow",
+    )
