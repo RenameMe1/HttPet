@@ -8,7 +8,7 @@ if TYPE_CHECKING:
     from typing import Any, Sequence, Hashable
     from pandas._typing import FilePath, WriteExcelBuffer, ExcelWriter
 
-all = [
+__all__ = [
     "OutputProtocol",
     "ExcelOutput",
 ]

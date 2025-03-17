@@ -5,7 +5,7 @@ from app.controllers.News import News, NewsProtocol
 from app.controllers.output import ExcelOutput, OutputProtocol
 from app.columns.env import env
 
-all = [
+__all__ = [
     "City",
     "CityProtocol",
     "News",

@@ -5,7 +5,7 @@ import typing
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from pydantic_core import ValidationError
 
-all = [
+__all__ = [
     "env",
 ]
 
