@@ -1,5 +1,14 @@
 # HttPet
 
+## Preparing environment
+
+- Use `make install` for installing `uv` and other project dependencies.
+- After above instruction fill to generated `.env` file
+
+## Run project
+
+- Use `make run` for running project
+
 ## Тактико технические характеристики HttPet 1107
 
 Необходимо разработать асинхронное скрипт, который будет собирать данные с
