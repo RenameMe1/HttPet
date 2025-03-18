@@ -2,31 +2,39 @@
 
 from __future__ import annotations
 
-from typing import Protocol, TYPE_CHECKING
+from typing import Protocol, TYPE_CHECKING, final
 
 import aiohttp
 
-from app.core.geo import GeoCity
+from app.core import GeoCity
 from app.controllers import env
 
 if TYPE_CHECKING:
     import typing
 
+__all__ = [
+    "ICityController",
+    "CityController",
+]
 
-class CityProtocol(Protocol):
+
+class ICityController(Protocol):
     def __init__(self, city: GeoCity): ...
     async def get_current_weather(self): ...
 
 
-class City:
-    """Class work with API openweathermap.org."""
+@final
+class CityController:
+    """Class work on API openweathermap.org."""
 
     __slots__ = [
         "city",
     ]
 
-    weather_api: typing.ClassVar = "https://api.openweathermap.org/data/2.5/weather"
-    api_key: typing.ClassVar = env.API_OPENWEATHER_KEY
+    weather_api: typing.ClassVar = (
+        "https://api.openweathermap.org/data/2.5/weather"
+    )
+    api_key: typing.ClassVar = env.API_NEWSAPI_KEY
 
     def __init__(self, city: GeoCity):
         self.city = city

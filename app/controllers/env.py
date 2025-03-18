@@ -1,3 +1,5 @@
+"""Module work on env variables."""
+
 from __future__ import annotations
 
 import typing
@@ -10,7 +12,7 @@ __all__ = [
 ]
 
 
-class _EnvVariable(BaseSettings):
+class _EnvVariables(BaseSettings):
     API_OPENWEATHER_KEY: typing.Annotated[
         str,
         ("API access key for openweathermap.org."),
@@ -19,10 +21,10 @@ class _EnvVariable(BaseSettings):
     API_NEWSAPI_KEY: typing.Annotated[
         str,
         ("API access key for newsapi.org"),
-        ]
+    ]
 
 
-class _EnvFileVariable(_EnvVariable):
+class _DotEnvFileVariables(_EnvVariables):
     model_config = SettingsConfigDict(
         env_file=".env",
         env_file_encoding="utf-8",
@@ -32,11 +34,13 @@ class _EnvFileVariable(_EnvVariable):
 
 def _define_variable_source():
     try:
-        env = _EnvVariable()
+        env = _EnvVariables()
     except ValidationError:
-        env = _EnvFileVariable()
+        env = _DotEnvFileVariables()
 
     return env
 
 
 env = _define_variable_source()
+
+print(env.API_OPENWEATHER_KEY)

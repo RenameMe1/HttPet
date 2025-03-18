@@ -1,9 +1,9 @@
-"""Module work on news._"""
+"""Module work on news."""
 
 from __future__ import annotations
 
 import datetime
-from typing import Protocol, TYPE_CHECKING
+from typing import Protocol, TYPE_CHECKING, final
 
 import aiohttp
 
@@ -12,13 +12,19 @@ from app.controllers.env import env
 if TYPE_CHECKING:
     from typing import ClassVar
 
+__all__ = [
+    "INewsController",
+    "NewsapiController",
+]
 
-class NewsProtocol(Protocol):
-    def __init__(): ...
-    def get_game_week_news(): ...
+
+class INewsController(Protocol):
+    def __init__(self): ...
+    def get_game_week_news(self): ...
 
 
-class News:
+@final
+class NewsapiController:
     api_key: ClassVar = env.API_NEWSAPI_KEY
     news_url: ClassVar = "https://newsapi.org/v2/everything"
 

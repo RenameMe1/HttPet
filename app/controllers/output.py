@@ -2,24 +2,32 @@ from __future__ import annotations
 
 from pandas import DataFrame
 
-from typing import Protocol, TYPE_CHECKING
+from typing import Protocol, TYPE_CHECKING, final
 
 if TYPE_CHECKING:
     from typing import Any, Sequence, Hashable
     from pandas._typing import FilePath, WriteExcelBuffer, ExcelWriter
 
 __all__ = [
-    "OutputProtocol",
-    "ExcelOutput",
+    "IOutputController",
+    "ExcelController",
 ]
 
 
-class OutputProtocol(Protocol):
+class IOutputController(Protocol):
     def __init__(self): ...
-    def write(self): ...
+
+    def write(
+        self,
+        output_data: Any,
+        *,
+        page: str = "Sheet1",
+        columns: Sequence[Hashable] | None = None,
+    ): ...
 
 
-class ExcelOutput:
+@final
+class ExcelController:
     slots = [
         "excel_writer",
     ]
