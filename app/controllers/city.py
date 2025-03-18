@@ -7,7 +7,7 @@ from typing import Protocol, TYPE_CHECKING, final
 import aiohttp
 
 from app.core import GeoCity
-from app.controllers import env
+from app.controllers.env import env
 
 if TYPE_CHECKING:
     import typing
@@ -53,6 +53,9 @@ class CityController:
             ) as response:
                 response = await response.json()
 
-        weather = response["weather"][0]
+        weather = response.get("weather")
 
-        return (weather["description"], city_name)
+        if weather is None:
+            return (f"Get Weather {city_name}", "Error")
+
+        return (weather[0]["description"], city_name)
