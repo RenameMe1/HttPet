@@ -1,5 +1,6 @@
 import asyncio
 
+import logging
 from typing import Protocol
 
 from app.controllers import (
@@ -15,6 +16,9 @@ __all__ = (
     "GeneralReportService",
 )
 
+logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.INFO)
+
 
 class GeneralReportProtocol(Protocol):
     def __init__(self, *, output: IOutputController) -> None: ...
@@ -27,14 +31,14 @@ class GeneralReportService:
 
     async def generate(self) -> None:
         """Generate asyncio tasks which make report."""
-        task_news = asyncio.create_task(self._get_news())
-        task_weather = asyncio.create_task(self._get_weather())
-        task_user = asyncio.create_task(self._get_user())
+        tasks = (
+            asyncio.create_task(self._get_news()),
+            asyncio.create_task(self._get_weather()),
+            asyncio.create_task(self._get_user()),
+        )
 
         await asyncio.gather(
-            task_news,
-            task_weather,
-            task_user,
+            *tasks,
         )
 
     async def _get_weather(self) -> None:
@@ -88,6 +92,8 @@ class GeneralReportService:
         columns=None,
     ) -> None:
         """Store data using selected IOutputController."""
+        logger.info(f"Write page: {page}")
+
         self.output.write(
             data,
             page=page,
