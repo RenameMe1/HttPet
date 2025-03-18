@@ -4,7 +4,7 @@
 
 - Use `make install` for installing `uv` and other project dependencies.
 - After above instruction fill to generated `.env` file
-- Read `app.controllers.env` for more information about dotEnvFile
+- Read `app.services.env` for more information about dotEnvFile
 
 ## Run project
 

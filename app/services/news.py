@@ -7,23 +7,23 @@ from typing import Protocol, TYPE_CHECKING, final
 
 import aiohttp
 
-from app.controllers.env import env
+from app.services.env import env
 
 if TYPE_CHECKING:
     from typing import ClassVar
 
 __all__ = [
-    "INewsController",
-    "NewsapiController",
+    "INewsService",
+    "NewsapiService",
 ]
 
 
-class INewsController(Protocol):
+class INewsService(Protocol):
     def get_game_week_news(self) -> list[dict[str, str]]: ...
 
 
 @final
-class NewsapiController:
+class NewsapiService:
     api_key: ClassVar = env.API_NEWSAPI_KEY
     news_url: ClassVar = "https://newsapi.org/v2/everything"
 

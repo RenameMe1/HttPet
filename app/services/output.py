@@ -1,20 +1,20 @@
 from __future__ import annotations
 
-from pandas import DataFrame, ExcelWriter
-
+from pathlib import Path
 from typing import Protocol, TYPE_CHECKING, final
+
+from pandas import DataFrame, ExcelWriter
 
 if TYPE_CHECKING:
     from typing import Any, Sequence, Hashable
-    from pathlib import Path
 
 __all__ = [
-    "IOutputController",
-    "ExcelController",
+    "IOutputService",
+    "ExcelOutputService",
 ]
 
 
-class IOutputController(Protocol):
+class IOutputService(Protocol):
     def write(
         self,
         output_data: Any,
@@ -25,7 +25,7 @@ class IOutputController(Protocol):
 
 
 @final
-class ExcelController:
+class ExcelOutputService:
     slots = [
         "excel_writer",
     ]
@@ -43,13 +43,20 @@ class ExcelController:
         page: str = "Sheet1",
         columns: Sequence[Hashable] | None = None,
     ) -> None:
+        mode = "w"
+        if_sheet_exists = None
+
+        if Path(self.excel_file).is_file():
+            mode = "a"
+            if_sheet_exists = "replace"
+
         df = DataFrame(output_data, columns=columns)
 
         with ExcelWriter(
             self.excel_file,
             engine="openpyxl",
-            mode="a",
-            if_sheet_exists="replace",
+            mode=mode,
+            if_sheet_exists=if_sheet_exists,
         ) as writer:
             df.to_excel(
                 writer,

@@ -8,12 +8,12 @@ if TYPE_CHECKING:
     pass
 
 __all__ = (
-    "IUserController",
+    "IUserService",
     "UserController",
 )
 
 
-class IUserController(Protocol):
+class IUserService(Protocol):
     def get_users(self, amount: int): ...
 
 

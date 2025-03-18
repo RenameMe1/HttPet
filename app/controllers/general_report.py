@@ -3,17 +3,17 @@ import asyncio
 import logging
 from typing import Protocol
 
-from app.controllers import (
-    IOutputController,
-    NewsapiController,
-    CityController,
+from app.services import (
+    IOutputService,
+    NewsapiService,
+    WeatherService,
     UserController,
 )
 from app.core import GeoCity
 
 __all__ = (
     "GeneralReportProtocol",
-    "GeneralReportService",
+    "GeneralReportController",
 )
 
 logger = logging.getLogger(__name__)
@@ -21,12 +21,12 @@ logging.basicConfig(level=logging.INFO)
 
 
 class GeneralReportProtocol(Protocol):
-    def __init__(self, *, output: IOutputController) -> None: ...
+    def __init__(self, *, output: IOutputService) -> None: ...
     async def generate(self) -> None: ...
 
 
-class GeneralReportService:
-    def __init__(self, *, output: IOutputController) -> None:
+class GeneralReportController:
+    def __init__(self, *, output: IOutputService) -> None:
         self.output = output
 
     async def generate(self) -> None:
@@ -59,7 +59,7 @@ class GeneralReportService:
         tasks = list()
 
         for geo in GeoCity:
-            city = CityController(geo)
+            city = WeatherService(geo)
             task = asyncio.create_task(city.get_current_weather())
 
             tasks.append(task)
@@ -67,7 +67,7 @@ class GeneralReportService:
         return tasks
 
     async def _generate_news_report(self) -> None:
-        news_api = NewsapiController()
+        news_api = NewsapiService()
 
         news = await news_api.get_game_news_at_week()
 
@@ -91,7 +91,7 @@ class GeneralReportService:
         page: str,
         columns=None,
     ) -> None:
-        """Store data using selected IOutputController."""
+        """Store data using selected IOutputService."""
         logger.info(f"Write page: {page}")
 
         self.output.write(

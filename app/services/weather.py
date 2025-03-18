@@ -7,23 +7,23 @@ from typing import Protocol, TYPE_CHECKING, final
 import aiohttp
 
 from app.core import GeoCity
-from app.controllers.env import env
+from app.services.env import env
 
 if TYPE_CHECKING:
     import typing
 
 __all__ = [
-    "ICityController",
-    "CityController",
+    "IWeatherService",
+    "WeatherService",
 ]
 
 
-class ICityController(Protocol):
+class IWeatherService(Protocol):
     async def get_current_weather(self) -> tuple[str, str]: ...
 
 
 @final
-class CityController:
+class WeatherService:
     """Class work on API openweathermap.org."""
 
     __slots__ = [
