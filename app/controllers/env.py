@@ -42,5 +42,3 @@ def _define_variable_source():
 
 
 env = _define_variable_source()
-
-print(env.API_OPENWEATHER_KEY)
