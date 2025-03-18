@@ -23,7 +23,7 @@ class UserController:
 
     user_api = "https://randomuser.me/api"
 
-    async def get_users(self, *, amount: int) -> dict:
+    async def get_users(self, *, amount: int) -> list[dict]:
         async with aiohttp.ClientSession() as session:
             async with session.get(
                 self.user_api,
