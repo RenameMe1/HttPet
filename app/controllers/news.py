@@ -19,8 +19,7 @@ __all__ = [
 
 
 class INewsController(Protocol):
-    def __init__(self): ...
-    def get_game_week_news(self): ...
+    def get_game_week_news(self) -> list[dict[str, str]]: ...
 
 
 @final
@@ -28,9 +27,7 @@ class NewsapiController:
     api_key: ClassVar = env.API_NEWSAPI_KEY
     news_url: ClassVar = "https://newsapi.org/v2/everything"
 
-    def __init__(self) -> None: ...
-
-    async def get_game_news_at_week(self):
+    async def get_game_news_at_week(self) -> list[dict[str, str]]:
         today = datetime.date.today()
         week_ago = today - datetime.timedelta(days=7)
 

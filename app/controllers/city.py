@@ -19,8 +19,7 @@ __all__ = [
 
 
 class ICityController(Protocol):
-    def __init__(self, city: GeoCity): ...
-    async def get_current_weather(self): ...
+    async def get_current_weather(self) -> tuple[str, str]: ...
 
 
 @final

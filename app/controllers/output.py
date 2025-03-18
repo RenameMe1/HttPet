@@ -15,8 +15,6 @@ __all__ = [
 
 
 class IOutputController(Protocol):
-    def __init__(self): ...
-
     def write(
         self,
         output_data: Any,
