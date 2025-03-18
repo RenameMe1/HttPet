@@ -34,7 +34,7 @@ class CityController:
     weather_api: typing.ClassVar = (
         "https://api.openweathermap.org/data/2.5/weather"
     )
-    api_key: typing.ClassVar = env.API_NEWSAPI_KEY
+    api_key: typing.ClassVar = env.API_OPENWEATHER_KEY
 
     def __init__(self, city: GeoCity):
         self.city = city
