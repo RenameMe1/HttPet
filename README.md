@@ -4,10 +4,12 @@
 
 - Use `make install` for installing `uv` and other project dependencies.
 - After above instruction fill to generated `.env` file
+- Read `app.controllers.env` for more information about dotEnvFile
 
 ## Run project
 
 - Use `make run` for running project
+- Use `make pre` for running `pre-commit run --all-files`
 
 ## Тактико технические характеристики HttPet 1107
 
