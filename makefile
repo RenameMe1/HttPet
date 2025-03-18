@@ -9,3 +9,6 @@ install:
 
 run:
 	uv run app/main.py
+
+pre:
+	uv run pre-commit run --all-files
