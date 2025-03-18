@@ -1,12 +1,12 @@
 from __future__ import annotations
 
-from pandas import DataFrame
+from pandas import DataFrame, ExcelWriter
 
 from typing import Protocol, TYPE_CHECKING, final
 
 if TYPE_CHECKING:
     from typing import Any, Sequence, Hashable
-    from pandas._typing import FilePath, WriteExcelBuffer, ExcelWriter
+    from pathlib import Path
 
 __all__ = [
     "IOutputController",
@@ -23,7 +23,7 @@ class IOutputController(Protocol):
         *,
         page: str = "Sheet1",
         columns: Sequence[Hashable] | None = None,
-    ): ...
+    ) -> None: ...
 
 
 @final
@@ -34,9 +34,9 @@ class ExcelController:
 
     def __init__(
         self,
-        excel_writer: FilePath | WriteExcelBuffer | ExcelWriter,
+        excel_file: Path,
     ) -> None:
-        self.excel_writer = excel_writer
+        self.excel_file = excel_file
 
     def write(
         self,
@@ -47,7 +47,14 @@ class ExcelController:
     ) -> None:
         df = DataFrame(output_data, columns=columns)
 
-        df.to_excel(
-            excel_writer=self.excel_writer,
-            sheet_name=page,
-        )
+        with ExcelWriter(
+            self.excel_file,
+            engine="openpyxl",
+            mode="a",
+            if_sheet_exists="replace",
+        ) as writer:
+            df.to_excel(
+                writer,
+                sheet_name=page,
+                index=False,
+            )
