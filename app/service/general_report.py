@@ -32,16 +32,16 @@ class GeneralReportService:
     async def generate(self) -> None:
         """Generate asyncio tasks which make report."""
         tasks = (
-            asyncio.create_task(self._get_news()),
-            asyncio.create_task(self._get_weather()),
-            asyncio.create_task(self._get_user()),
+            asyncio.create_task(self._generate_news_report()),
+            asyncio.create_task(self._generate_weather_report()),
+            asyncio.create_task(self._generate_user_report()),
         )
 
         await asyncio.gather(
             *tasks,
         )
 
-    async def _get_weather(self) -> None:
+    async def _generate_weather_report(self) -> None:
         """Generate asyncio tasks which get weather info."""
         tasks = self._generate_asyncio_tasks()
 
@@ -66,7 +66,7 @@ class GeneralReportService:
 
         return tasks
 
-    async def _get_news(self) -> None:
+    async def _generate_news_report(self) -> None:
         news_api = NewsapiController()
 
         news = await news_api.get_game_news_at_week()
@@ -76,7 +76,7 @@ class GeneralReportService:
             page="news",
         )
 
-    async def _get_user(self) -> None:
+    async def _generate_user_report(self) -> None:
         user_api = UserController()
         users = await user_api.get_users(amount=50)
 
