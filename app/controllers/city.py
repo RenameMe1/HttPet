@@ -56,6 +56,6 @@ class CityController:
         weather = response.get("weather")
 
         if weather is None:
-            return (f"Get Weather {city_name}", "Error")
+            return ("Get Weather error", city_name)
 
         return (weather[0]["description"], city_name)
