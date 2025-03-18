@@ -2,17 +2,27 @@ import asyncio
 
 from typing import Protocol
 
-from app.controllers import OutputProtocol, News, City
+from app.controllers import (
+    IOutputController,
+    NewsapiController,
+    CityController,
+    UserController,
+)
 from app.core import GeoCity
+
+__all__ = (
+    "GeneralReportProtocol",
+    "GeneralReportService",
+)
 
 
 class GeneralReportProtocol(Protocol):
-    def __init__(self, *, output: OutputProtocol) -> None: ...
+    def __init__(self, *, output: IOutputController) -> None: ...
     async def generate(self) -> None: ...
 
 
 class GeneralReportService:
-    def __init__(self, *, output: OutputProtocol) -> None:
+    def __init__(self, *, output: IOutputController) -> None:
         self.output = output
 
     async def generate(self) -> None:
@@ -33,7 +43,11 @@ class GeneralReportService:
 
         weathers = await asyncio.gather(*tasks)
 
-        return self._to_store(weathers, "weather", ["wathter", "city"])
+        return self._to_store(
+            weathers,
+            page="weather",
+            columns=["wathter", "city"],
+        )
 
     @staticmethod
     def _generate_asyncio_tasks():
@@ -41,7 +55,7 @@ class GeneralReportService:
         tasks = list()
 
         for geo in GeoCity:
-            city = City(geo)
+            city = CityController(geo)
             task = asyncio.create_task(city.get_current_weather())
 
             tasks.append(task)
@@ -49,23 +63,33 @@ class GeneralReportService:
         return tasks
 
     async def _get_news(self) -> None:
-        news_api = News()
+        news_api = NewsapiController()
 
         news = await news_api.get_game_news_at_week()
 
-        self._to_store(news, "news")
+        self._to_store(
+            news,
+            page="news",
+        )
+
+    async def _get_user(self) -> None:
+        user_api = UserController()
+        users = await user_api.get_users(amount=50)
+
+        self._to_store(
+            users,
+            page="users",
+        )
 
     def _to_store(
         self,
         data,
-        page_name: str,
+        page: str,
         columns=None,
     ) -> None:
-        """Store data using selected OutputProtocol."""
-        self.output(
+        """Store data using selected IOutputController."""
+        self.output.write(
             data,
-            page=page_name,
+            page=page,
             columns=columns,
         )
-
-    async def _get_user(self) -> None: ...
